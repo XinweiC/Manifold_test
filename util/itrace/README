@@ -1,0 +1,34 @@
+2012-12-12
+==========
+
+This directory contains a program, itrace.cpp, that is used to produce trace
+files for Zesto.
+
+To use it,
+
+1. Copy the directory to <PIN>/source/tools,
+where <PIN> is the installation directory of PIN.
+
+2. cd <PIN>/source/tools/itrace
+make
+
+This produces a directory obj-ia32, and in that directory a file itrace.so.
+
+3. To generate trace file for a binary:
+
+../../../pin -t obj-ia32/itrace.so -- <binary>
+
+where <binary> is the path to the 32-bit binary of your application.
+
+4. A file itrace_0.out is producted. This file can be used with Zesto.
+
+
+### NOTES ###
+
+1. This has been tested with PIN 2.12.
+2. There is a variable "start" that tells the program to skip that many instructions at
+the beginning. I've set it to 0, so nothing is skipped.
+3. The macro MAX_INSTRUCTIONS defines the max number of instructions to process.
+
+
+

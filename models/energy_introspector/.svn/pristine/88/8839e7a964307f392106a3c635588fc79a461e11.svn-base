@@ -1,0 +1,340 @@
+# ./hotspot -f ev6.flp -p gcc.ptrace -model_type grid -grid_layer_file layer.lcf
+
+-package.name						HotSpot
+-package.thermal_library				hotspot
+
+-package.thermal_analysis				transient
+-package.model_type					grid
+
+-package.chip_thickness					0.15e-3
+-package.chip_thermal_conductivity			100.0
+-package.chip_heat					1.75e6
+-package.thermal_threshold				354.95
+
+-package.heatsink_convection_capacitance		140.4
+-package.heatsink_convection_resistance			0.1
+-package.heatsink_side					60e-3
+-package.heatsink_thickness				6.9e-3
+-package.heatsink_thermal_conductivity			400.0
+-package.heatsink_heat					3.55e6
+
+-package.spreader_side					30e-3
+-package.spreader_thickness				1e-3
+-package.spreader_thermal_conductivity			400.0
+-package.spreader_heat					3.55e6
+
+-package.interface_thickness				20e-6
+-package.interface_thermal_conductivity			4.0
+-package.interface_heat					4.0e6
+
+-package.secondary_model										false
+-package.secondary_convection_resistance		50.0
+-package.secondary_convection_capacitance		40.0
+-package.metal_layers												8
+-package.metal_layer_thickness				10e-6
+
+-package.c4_thickness									0.0001
+-package.c4_side											20e-6
+-package.c4_pads											400
+-package.substrate_side								0.021
+-package.substrate_thickness					1e-3
+-package.solder_side									0.021
+-package.solder_thickness							0.00094	
+-package.pcb_side											0.1
+-package.pcb_thickness								0.002
+
+-package.ambient_temperature					318.15
+-package.temperature									333.15
+-package.dtm_used											false
+-package.leakage_used									false
+-package.package_model_used						false
+-package.grid_rows										64
+-package.grid_columns									64
+-package.grid_map_mode								average
+
+-package.layer													TIM
+-package.layer.TIM.is_source_layer			false
+-package.layer.TIM.use_layer_partition	Silicon
+-package.layer.TIM.lateral_heat_flow		true
+-package.layer.TIM.heat									4e6
+-package.layer.TIM.resistance						0.25
+-package.layer.TIM.thickness						20e-6
+
+-package.layer													Silicon
+-package.layer.Silicon.is_source_layer	true
+-package.layer.Silicon.lateral_heat_flow	true
+-package.layer.Silicon.heat							1.75e6
+-package.layer.Silicon.resistance				0.01
+-package.layer.Silicon.thickness				0.15e-3
+
+-package.partition			L2_left
+-package.partition			L2
+-package.partition			L2_right
+-package.partition			Icache
+-package.partition			Dcache
+-package.partition			Bpred_0
+-package.partition			Bpred_1
+-package.partition			Bpred_2
+-package.partition			DTB_0
+-package.partition			DTB_1
+-package.partition			DTB_2
+-package.partition			FPAdd_0
+-package.partition			FPAdd_1
+-package.partition			FPReg_0
+-package.partition			FPReg_1
+-package.partition			FPReg_2
+-package.partition			FPReg_3
+-package.partition			FPMul_0
+-package.partition			FPMul_1
+-package.partition			FPMap_0
+-package.partition			FPMap_1
+-package.partition			IntMap
+-package.partition			IntQ
+-package.partition			IntReg_0
+-package.partition			IntReg_1
+-package.partition			IntExec
+-package.partition			FPQ
+-package.partition			LdStQ
+-package.partition			ITB_0
+-package.partition			ITB_1
+-package.end
+
+-partition.name		L2_left
+-partition.x_left	0.0e-3
+-partition.y_bottom	9.8e-3
+-partition.length	4.9e-3
+-partition.width	6.2e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		L2
+-partition.x_left	0.0e-3
+-partition.y_bottom	0.0e-3
+-partition.length	16.0e-3
+-partition.width	9.8e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		L2_right
+-partition.x_left	11.1e-3
+-partition.y_bottom	9.8e-3
+-partition.length	4.9e-3
+-partition.width	6.2e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		Icache
+-partition.x_left	4.9e-3
+-partition.y_bottom	9.8e-3
+-partition.length	3.1e-3
+-partition.width	2.6e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		Dcache
+-partition.x_left	8.0e-3
+-partition.y_bottom	9.8e-3
+-partition.length	3.1e-3
+-partition.width	2.6e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		Bpred_0
+-partition.x_left	4.9e-3
+-partition.y_bottom	12.4e-3
+-partition.length	1.033e-3
+-partition.width	0.7e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		Bpred_1
+-partition.x_left	5.933e-3
+-partition.y_bottom	12.4e-3
+-partition.length	1.033e-3
+-partition.width	0.7e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		Bpred_2
+-partition.x_left	6.967e-3
+-partition.y_bottom	12.4e-3
+-partition.length	1.033e-3
+-partition.width	0.7e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		DTB_0
+-partition.x_left	8.0e-3
+-partition.y_bottom	12.4e-3
+-partition.length	1.033e-3
+-partition.width	0.7e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		DTB_1
+-partition.x_left	9.033e-3
+-partition.y_bottom	12.4e-3
+-partition.length	1.033e-3
+-partition.width	0.7e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		DTB_2
+-partition.x_left	10.067e-3
+-partition.y_bottom	12.4e-3
+-partition.length	1.033e-3
+-partition.width	0.7e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPAdd_0
+-partition.x_left	4.9e-3
+-partition.y_bottom	13.1e-3
+-partition.length	1.1e-3
+-partition.width	0.9e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPAdd_1
+-partition.x_left	6.0e-3
+-partition.y_bottom	13.1e-3
+-partition.length	1.1e-3
+-partition.width	0.9e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPReg_0
+-partition.x_left	4.9e-3
+-partition.y_bottom	14.0e-3
+-partition.length	0.55e-3
+-partition.width	0.38e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPReg_1
+-partition.x_left	5.4e-3
+-partition.y_bottom	14.0e-3
+-partition.length	0.55e-3
+-partition.width	0.38e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPReg_2
+-partition.x_left	6.0e-3
+-partition.y_bottom	14.0e-3
+-partition.length	0.55e-3
+-partition.width	0.38e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPReg_3
+-partition.x_left	6.55e-3
+-partition.y_bottom	14.0e-3
+-partition.length	0.55e-3
+-partition.width	0.38e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPMul_0
+-partition.x_left	4.9e-3
+-partition.y_bottom	14.38e-3
+-partition.length	1.1e-3
+-partition.width	0.95e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPMul_1
+-partition.x_left	6.0e-3
+-partition.y_bottom	14.38e-3
+-partition.length	1.1e-3
+-partition.width	0.95e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPMap_0
+-partition.x_left	4.9e-3
+-partition.y_bottom	15.33e-3
+-partition.length	1.1e-3
+-partition.width	0.67e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPMap_1
+-partition.x_left	6.0e-3
+-partition.y_bottom	15.33e-3
+-partition.length	1.1e-3
+-partition.width	0.67e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		IntMap
+-partition.x_left	7.1e-3
+-partition.y_bottom	14.65e-3
+-partition.length	0.9e-3
+-partition.width	1.35e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		IntQ
+-partition.x_left	8.0e-3
+-partition.y_bottom	14.65e-3
+-partition.length	1.3e-3
+-partition.width	1.35e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		IntReg_0
+-partition.x_left	9.3e-3
+-partition.y_bottom	15.33e-3
+-partition.length	0.9e-3
+-partition.width	0.67e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		IntReg_1
+-partition.x_left	10.2e-3
+-partition.y_bottom	15.33e-3
+-partition.length	0.9e-3
+-partition.width	0.67e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		IntExec
+-partition.x_left	9.3e-3
+-partition.y_bottom	13.1e-3
+-partition.length	1.8e-3
+-partition.width	2.23e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		FPQ
+-partition.x_left	7.1e-3
+-partition.y_bottom	13.1e-3
+-partition.length	0.9e-3
+-partition.width	1.55e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		LdStQ
+-partition.x_left	8.0e-3
+-partition.y_bottom	13.7e-3
+-partition.length	1.3e-3
+-partition.width	0.95e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		ITB_0
+-partition.x_left	8.0e-3
+-partition.y_bottom	13.1e-3
+-partition.length	0.65e-3
+-partition.width	0.6e-3
+-partition.layer		Silicon
+-partition.end
+
+-partition.name		ITB_1
+-partition.x_left	8.65e-3
+-partition.y_bottom	13.1e-3
+-partition.length	0.65e-3
+-partition.width	0.6e-3
+-partition.layer		Silicon
+-partition.end

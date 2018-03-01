@@ -1,0 +1,102 @@
+--- torus6p.h.ORIG	2013-12-01 21:41:38.000000000 -0500
++++ torus6p.h	2014-02-26 02:05:30.568240656 -0500
+@@ -3,15 +3,14 @@
+  *    Description:  new interface that can be connect all kinds of terminal
+  *
+  *        Version:  1.0
+- *        Created:  10/10/2011 
++ *        Created:  2/25/2014 
+  *
+- *         Author:  Zhenjiang Dong
++ *         Author:  He XIAO
+  *         School:  Georgia Institute of Technology
+  *
+  * =====================================================================================
+  */
+ 
+-
+ #ifndef  MANIFOLD_IRIS_TORUS6P_H
+ #define  MANIFOLD_IRIS_TORUS6P_H
+ 
+@@ -41,7 +40,7 @@
+ {
+     public:
+         //constructor and deconstructor
+-        //Torus (manifold::kernel::Clock& clk, torus_init_params* params, const Terminal_to_net_mapping* mapping, SimulatedLen<T>*, VnetAssign<T>*, int ni_credit_type, int lp=0); //all interfaces and routers in one LP
++        //Torus6p (manifold::kernel::Clock& clk, torus_init_params* params, const Terminal_to_net_mapping* mapping, SimulatedLen<T>*, VnetAssign<T>*, int ni_credit_type, int lp=0); //all interfaces and routers in one LP
+ 	//! @param \c node_lp   router idx to LP mapping
+         Torus6p (manifold::kernel::Clock& clk, torus6p_init_params* params, const Terminal_to_net_mapping* mapping, SimulatedLen<T>*, VnetAssign<T>*, int ni_credit_type, vector<int>* node_lp);
+         ~Torus6p ();
+@@ -79,10 +78,9 @@
+        std::ofstream outFile_data; 
+        std::ofstream outFile_signal;
+ #endif  
+-
++     
+        unsigned int intf_per_router;
+ 
+-     
+    protected:     
+ }; 
+ 
+@@ -140,7 +138,7 @@
+     i_p_rt.no_ports = 4 + intf_per_router;
+     i_p_rt.no_vcs = params->no_vcs;
+     i_p_rt.credits = params->credits;
+-    i_p_rt.rc_method = TORUS6P_ROUTING; 
++    i_p_rt.rc_method = TORUS_ROUTING; 
+     
+     NIInit<T> niInit(mapping, slen, vn);
+ 
+@@ -223,7 +221,7 @@
+     {
+         GenNetworkInterface<T>* interface = manifold::kernel::Component::GetComponent< GenNetworkInterface<T> >(interface_ids.at(i));
+         if ( interface != NULL ) {
+-	    SimpleRouter* rr= manifold::kernel::Component::GetComponent<SimpleRouter>(router_ids.at(i / intf_per_router));
++          SimpleRouter* rr= manifold::kernel::Component::GetComponent<SimpleRouter>(router_ids.at(i / intf_per_router));
+ 	    assert(rr);
+ 	    interface->set_router(rr);
+ 	}
+@@ -256,19 +254,19 @@
+     //  Connect for the output links of the router 
+     for( uint i=0; i<x_dim*y_dim; i++)
+     {
+-	manifold::kernel::Manifold::Connect(interface_ids.at(i*intf_per_router), GenNetworkInterface<T>::DATAOUT, 
++	manifold::kernel::Manifold::Connect(interface_ids.at(i*intf_per_router), GenNetworkInterface<T>::ROUTER_PORT, 
+ 					    router_ids.at(i), SimpleRouter::PORT_NI,
+ 					    &SimpleRouter::handle_link_arrival , static_cast<manifold::kernel::Ticks_t>(LATENCY));
+ 	manifold::kernel::Manifold::Connect(router_ids.at(i), SimpleRouter::PORT_NI, 
+-					    interface_ids.at(i*intf_per_router), GenNetworkInterface<T>::DATAIN,
++					    interface_ids.at(i*intf_per_router), GenNetworkInterface<T>::ROUTER_PORT,
+ 					    &GenNetworkInterface<T>::handle_router , static_cast<manifold::kernel::Ticks_t>(LATENCY));
+ 
+-        manifold::kernel::Manifold::Connect(interface_ids.at(i*intf_per_router+1), GenNetworkInterface<T>::DATAOUT, 
+-                                            router_ids.at(i), SimpleRouter::PORT_MC,
+-                                            &SimpleRouter::handle_link_arrival , static_cast<manifold::kernel::Ticks_t>(LATENCY));
+-        manifold::kernel::Manifold::Connect(router_ids.at(i), SimpleRouter::PORT_MC, 
+-                                            interface_ids.at(i*intf_per_router+1), GenNetworkInterface<T>::DATAIN,
+-                                            &GenNetworkInterface<T>::handle_router , static_cast<manifold::kernel::Ticks_t>(LATENCY));
++	manifold::kernel::Manifold::Connect(interface_ids.at(i*intf_per_router+1), GenNetworkInterface<T>::ROUTER_PORT, 
++					    router_ids.at(i), SimpleRouter::PORT_MC,
++					    &SimpleRouter::handle_link_arrival , static_cast<manifold::kernel::Ticks_t>(LATENCY));
++	manifold::kernel::Manifold::Connect(router_ids.at(i), SimpleRouter::PORT_MC, 
++					    interface_ids.at(i*intf_per_router+1), GenNetworkInterface<T>::ROUTER_PORT,
++					    &GenNetworkInterface<T>::handle_router , static_cast<manifold::kernel::Ticks_t>(LATENCY));
+ 	#ifdef IRIS_TEST
+             if(interfaces.at(i))
+ 		outFile_data<< "0.0 L " << interfaces.at(i)->id << " " << routers.at(i)->node_id + x_dim*y_dim<< std::endl;
+@@ -284,7 +282,7 @@
+ Torus6p<T>::connect_routers()
+ {
+     const manifold::kernel::Ticks_t LATENCY = 1;
+-    const unsigned no_nodes = x_dim * y_dim;
++    //const unsigned no_nodes = x_dim * y_dim;
+ 
+     // Configure east - west links for the routers.. in order first WEST then
+     for ( uint i=0; i<y_dim; i++) { //for all rows
+@@ -469,4 +467,4 @@
+ } //Manifold
+ 
+ #endif  
+-/* ----- #ifndef MANIFOLD_IRIS_TORUS6P_H  ----- */
++/* ----- #ifndef MANIFOLD_IRIS_TORUS_H  ----- */

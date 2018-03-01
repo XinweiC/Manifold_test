@@ -1,0 +1,242 @@
+# This is equivalent configuration to 3D-ICE example_transient.stk
+
+-package.name				3DICE
+-package.thermal_library		3dice
+-package.thermal_analysis_type		steady
+-package.ambient_temperature		300.0
+-package.temperature			300.0
+-package.chip_length			10e-3	# 10mm
+-package.chip_width			10e-3	# 10mm
+-package.grid_rows			100
+-package.grid_columns		100
+
+-package.material					SILICON
+-package.material.SILICON.thermal_conductivity		1.30e-4 
+-package.material.SILICON.volumetric_heat_capacity	1.628e-12
+-package.material					BEOL
+-package.material.BEOL.thermal_conductivity		2.25e-6
+-package.material.BEOL.volumetric_heat_capacity		2.175e-12
+
+-package.conventional_heatsink					true
+-package.conventional_heatsink.heat_transfer_coefficient	1.0e-7
+
+-package.microchannel.type					2rm
+-package.microchannel.height					100e-6
+-package.microchannel.channel_length				50e-6
+-package.microchannel.wall_length				50e-6
+-package.microchannel.wall_material				SILICON
+-package.microchannel.coolant_flow_rate				42
+-package.microchannel.coolant_heat_transfer_coefficient_top	5.7132e-8
+-package.microchannel.coolant_heat_transfer_coefficient_bottom	4.7132e-8
+-package.microchannel.coolant_volumetric_heat_capacity		4.172e-12
+-package.microchannel.coolant_incoming_temperature		300.0
+
+-package.die						TOP_IC
+-package.die.TOP_IC.layer				SOURCE_LAYER
+-package.die.TOP_IC.layer.SOURCE_LAYER.height		2e-6
+-package.die.TOP_IC.layer.SOURCE_LAYER.material		SILICON
+-package.die.TOP_IC.layer.SOURCE_LAYER.is_source_layer	true
+-package.die.TOP_IC.layer				BOTTOM_LAYER
+-package.die.TOP_IC.layer.BOTTOM_LAYER.height		50e-6
+-package.die.TOP_IC.layer.BOTTOM_LAYER.material		SILICON
+
+-package.die						BOTTOM_IC
+-package.die.BOTTOM_IC.layer				TOP_LAYER
+-package.die.BOTTOM_IC.layer.TOP_LAYER.height		10e-6
+-package.die.BOTTOM_IC.layer.TOP_LAYER.material		BEOL
+-package.die.BOTTOM_IC.layer				SOURCE_LAYER
+-package.die.BOTTOM_IC.layer.SOURCE_LAYER.height	2e-6
+-package.die.BOTTOM_IC.layer.SOURCE_LAYER.material	SILICON
+-package.die.BOTTOM_IC.layer.SOURCE_LAYER.is_sourcE_layer true
+-package.die.BOTTOM_IC.layer				BOTTOM_LAYER
+-package.die.BOTTOM_IC.layer.BOTTOM_LAYER.height	50e-6
+-package.die.BOTTOM_IC.layer.BOTTOM_LAYER.material	SILICON
+
+-package.stack						MEMORY_DIE
+-package.stack.MEMORY_DIE.type				die
+-package.stack.MEMORY_DIE.die				TOP_IC
+-package.stack						TOP_CHANNEL
+-package.stack.TOP_CHANNEL.type				channel
+-package.stack						CORE_DIE
+-package.stack.CORE_DIE.type				die
+-package.stack.CORE_DIE.die				BOTTOM_IC
+-package.stack						BOTTOM_CHANNEL
+-package.stack.BOTTOM_CHANNEL.type			channel
+-package.stack						BOTTOM_MOST
+-package.stack.BOTTOM_MOST.type				layer
+-package.stack.BOTTOM_MOST.height			10e-6
+-package.stack.BOTTOM_MOST.material			BEOL
+
+-package.partition	MEMORY_DIE:Background1
+-package.partition	MEMORY_DIE:Background2
+-package.partition	MEMORY_DIE:HotSpot1
+-package.partition	MEMORY_DIE:HotSpot2
+-package.partition	CORE_DIE:Core0
+-package.partition	CORE_DIE:Core1
+-package.partition	CORE_DIE:Core2
+-package.partition	CORE_DIE:Core3
+-package.partition	CORE_DIE:Core4
+-package.partition	CORE_DIE:Core5
+-package.partition	CORE_DIE:Core6
+-package.partition	CORE_DIE:Core7
+-package.partition	CORE_DIE:Cache0
+-package.partition	CORE_DIE:Cache1
+-package.partition	CORE_DIE:CLK
+-package.partition	CORE_DIE:FPU
+-package.partition	CORE_DIE:CrossBar
+
+-package.end
+
+
+-partition.name		MEMORY_DIE:Background1
+-partition.x_left	0.0
+-partition.y_bottom	0.0
+-partition.layer	1
+-partition.width	5e-3
+-partition.length	5e-3
+-partition.die		MEMORY_DIE
+-partition.end
+
+-partition.name		MEMORY_DIE:Background2
+-partition.x_left	5e-3
+-partition.y_bottom	5e-3
+-partition.layer	1
+-partition.width	5e-3
+-partition.length	5e-3
+-partition.die		MEMORY_DIE
+-partition.end
+
+-partition.name		MEMORY_DIE:HotSpot1
+-partition.x_left	5e-3
+-partition.y_bottom	0
+-partition.layer	1
+-partition.width	5e-3
+-partition.length	5e-3
+-partition.die		MEMORY_DIE
+-partition.end
+
+-partition.name		MEMORY_DIE:HotSpot2
+-partition.x_left	0
+-partition.y_bottom	5e-3
+-partition.layer	1
+-partition.width	5e-3
+-partition.length	5e-3
+-partition.die		MEMORY_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core0
+-partition.x_left	0.0
+-partition.y_bottom	0.0
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core1
+-partition.x_left	2.5e-3
+-partition.y_bottom	0e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core2
+-partition.x_left	5e-3
+-partition.y_bottom	0e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core3
+-partition.x_left	7.5e-3
+-partition.y_bottom	0e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core4
+-partition.x_left	0e-3
+-partition.y_bottom	6.5e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core5
+-partition.x_left	2.5e-3
+-partition.y_bottom	6.5e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core6
+-partition.x_left	5e-3
+-partition.y_bottom	6.5e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Core7
+-partition.x_left	7.5e-3
+-partition.y_bottom	6.5e-3
+-partition.layer	0
+-partition.width	3.5e-3
+-partition.length	2.5e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Cache0
+-partition.x_left	0e-3
+-partition.y_bottom	3.5e-3
+-partition.layer	0
+-partition.width	3e-3
+-partition.length	1.25e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:Cache1
+-partition.x_left	8.75e-3
+-partition.y_bottom	3.5e-3
+-partition.layer	0
+-partition.width	3e-3
+-partition.length	1.25e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:CLK
+-partition.x_left	1.25e-3
+-partition.y_bottom	3.5e-3
+-partition.layer	0
+-partition.width	3e-3
+-partition.length	1.25e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:FPU
+-partition.x_left	7.5e-3
+-partition.y_bottom	3.5e-3
+-partition.layer	0
+-partition.width	3e-3
+-partition.length	1.25e-3
+-partition.die		CORE_DIE
+-partition.end
+
+-partition.name		CORE_DIE:CrossBar
+-partition.x_left	2.5e-3
+-partition.y_bottom	3.5e-3
+-partition.layer	0
+-partition.width	3e-3
+-partition.length	5e-3
+-partition.die		CORE_DIE
+-partition.end

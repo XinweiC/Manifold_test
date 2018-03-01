@@ -1,0 +1,439 @@
+/*
+   The Energy Introspector (EI) is the simulation interface and does not possess 
+   the copyrights of the following tools: 
+      IntSim: Microelectronics Research Center, Georgia Tech
+      DSENT: Computer Science and Artificial Intelligence Lab, MIT
+      McPAT: Hewlett-Packard Labs
+      3D-ICE: Embedded Systems Lab, EPFL
+      HotSpot: Laboratory for Computer Architecture at Virginia, Univ. of Virginia
+  
+   The EI does not guarantee the exact same functionality, performance, or result
+   of the above tools distributed by the original developers.
+  
+   The Use, modification, and distribution of the EI is subject to the policy of
+   the Semiconductor Research Corporation (Task 2084.001).
+  
+   Copyright 2012
+   William Song and Sudhakar Yalamanchili
+   Georgia Institute of Technology, Atlanta, GA 30332
+*/
+
+#ifndef EI_DEF_H
+#define EI_DEF_H
+
+#include <utility>
+#include <string>
+#include <map>
+#include <stdint.h>
+#include <assert.h>
+
+using namespace std;
+
+namespace EI {
+
+  #define MAX_TIME 1e10
+  
+  #define ENERGY_INTROSPECTOR_DEBUG_
+  
+  class counters_t
+  {
+  public:
+    counters_t() { reset(); }
+    
+    uint64_t search; // search access
+    uint64_t read; // module read access
+    uint64_t write; // module write access
+    uint64_t read_tag; // read_tag access (cache r/w miss)
+    uint64_t write_tag; // write_tag access (tag update)
+    
+    void reset() 
+    { 
+      search = 0; read = 0; write = 0; read_tag = 0; write_tag = 0;
+    }
+  };
+  
+  
+  // in unit of watt
+  class power_t
+  {
+  public:
+    power_t() { reset(); }
+    
+    // leakage
+    double leakage; // leakage power
+    
+    // dynamic
+    double baseline; // baseline dynamic power
+    double search; // module entry search power
+    double read; // module read power (data+tag)
+    double write; // module write power (data+tag)
+    double read_tag; // tag array read power
+    double write_tag; // tag array write power
+    double total; // total power = leakage + dynamic
+    
+    void reset()
+    {
+      leakage = 0.0; 
+      baseline = 0.0;
+      search = 0.0; read = 0.0; write = 0.0;
+      read_tag = 0.0; write_tag = 0.0;
+      total = 0.0;
+    }
+
+    void set(power_t p)
+    {
+      this->leakage = p.leakage;
+      this->baseline = p.baseline;
+      this->search = p.search;
+      this->read = p.read;
+      this->read_tag = p.read_tag;
+      this->write = p.write;
+      this->write_tag = p.write_tag;
+
+      double sum = p.get_total();
+      if(sum > 0.0)
+        total = sum;
+      this->total = sum;
+    }
+    
+    double get_total()
+    {
+      double sum = baseline+search+read+read_tag+write+write_tag+leakage;
+      if(sum > 0.0)
+        total = sum;
+      return total;
+    }
+  };
+  
+  
+  // in unit of joule
+  class energy_t
+  {
+  public:
+    energy_t() { reset(); }
+    
+    // leakage
+    double leakage; // leakage energy
+    
+    // dynamic
+    double baseline; // baseline dynamic energy
+    double search; // module entry search energy
+    double read; // module read energy (data+tag) 
+    double write; // module write energy (data+tag)
+    double read_tag; // tag array read energy
+    double write_tag; // tag array write energy
+    double total; // total energy = leakage + dynamic
+    
+    void reset()
+    {
+      leakage = 0.0; 
+      baseline = 0.0;
+      search = 0.0; read = 0.0; write = 0.0;
+      read_tag = 0.0; write_tag = 0.0;
+      total = 0.0;
+    }
+    
+    double get_total()
+    {
+      double sum = baseline+search+read+read_tag+write+write_tag+leakage;
+      if(sum > 0.0)
+        total = sum;
+      return total;
+    }
+  };
+  
+  
+  class grid_index_t
+  {
+  public:
+    grid_index_t(int X, int Y, int L) : x(X),y(Y),layer(L) { }
+    int x, y, layer;
+    
+    bool operator < (const grid_index_t &index) const
+    {
+      if(layer == index.layer)
+      {
+        if(y == index.y)
+          return (x < index.x);
+        else
+          return (y < index.y);
+      }
+      else
+        return (layer < index.layer);
+    }
+  };
+  
+  
+  template <typename T>
+  class grid_t
+  {
+  public:
+    grid_t() { reset(); }
+    
+    double cell_width, cell_length;
+    map<grid_index_t,T> grid;
+    
+    void push(int x, int y, int layer, T data)
+    {
+      grid_index_t index(x,y,layer);
+      grid.insert(pair<grid_index_t,T>(index,data));
+    }
+    
+    void update(int x, int y, int layer, T data)
+    {
+      grid_index_t index(x,y,layer);
+      typename map<grid_index_t,T>::iterator it = grid.find(index);
+      
+      if(it != grid.end())
+        it->second = data;
+      else 
+        push(x,y,layer,data);
+    }
+    
+    T pull(int x, int y, int layer)
+    {
+      T data;
+      
+      grid_index_t index(x,y,layer);
+      typename map<grid_index_t,T>::iterator it = grid.find(index);
+      
+      if(it != grid.end())
+        data = it->second;
+      
+      return data;
+    }
+    
+    T pull(double x, double y, int layer)
+    {
+      int x_index = (int)(x/cell_length);
+      int y_index = (int)(y/cell_width);
+      
+      return pull(x_index,y_index,layer);
+    }
+    
+    void reset()
+    {
+      cell_width = 0.0;
+      cell_length = 0.0;
+      grid.clear();
+    }
+  };
+  
+  
+  // in unit of m or m^2
+  class dimension_t
+  {
+  public:
+    dimension_t() { reset(); }
+    
+    double x_left, y_bottom; // x-y coordinate on 2D plane
+    double width, length; // width/length of rectangular block
+    int layer; // 3D layer index
+    double area;
+    
+    void reset()
+    {
+      x_left = 0.0; y_bottom = 0.0; 
+      width = 0.0; length = 0.0; 
+      layer = 0;
+      area = 0.0;
+    }
+    
+    double get_x_center()
+    {
+      return x_left+length/2.0;
+    }
+    
+    double get_y_center()
+    {
+      return y_bottom+width/2.0;
+    }
+    
+    double get_area()
+    {
+      if(area == 0.0)
+        area = width*length;
+      
+      return area;
+    }
+  };
+  
+  
+  // access counter operators
+  inline counters_t operator+(const counters_t & x, const counters_t & y)
+  {
+    counters_t z;
+    z.search = x.search + y.search;
+    z.read = x.read + y.read;
+    z.write = x.write + y.write;
+    z.read_tag = x.read_tag + y.read_tag;
+    z.write_tag = x.write_tag + y.write_tag;
+    return z;
+  }
+  
+  
+  inline counters_t operator-(const counters_t & x, const counters_t & y)
+  {
+    counters_t z;
+    z.search = x.search - y.search;
+    z.read = x.read - y.read;
+    z.write = x.write - y.write;
+    z.read_tag = x.read_tag - y.read_tag;
+    z.write_tag = x.write_tag - y.write_tag;
+    return z;
+  }
+
+  inline counters_t operator*(const counters_t & x, const double y)
+  {
+    counters_t z;
+    z.search = (int)(x.search * y);
+    z.read = (int)(x.read * y);
+    z.write = (int)(x.write * y);
+    z.read_tag = (int)(x.read_tag * y);
+    z.write_tag = (int)(x.write_tag * y);
+
+    return z;
+  }
+  
+  
+  // energy operators
+  inline energy_t operator+(const energy_t & x, const energy_t & y)
+  {
+    energy_t z;
+    z.leakage = x.leakage + y.leakage;
+    z.baseline = x.baseline + y.baseline;
+    z.search = x.search + y.search;
+    z.read = x.read + y.read;
+    z.write = x.write + y.write;
+    z.read_tag = x.read_tag + y.read_tag;
+    z.write_tag = x.write_tag + y.write_tag;
+    z.total = x.total + y.total;
+    return z;
+  }
+  
+  
+  inline energy_t operator-(const energy_t & x, const energy_t & y)
+  {
+    energy_t z;
+    z.leakage = x.leakage - y.leakage;
+    z.baseline = x.baseline - y.baseline;
+    z.search = x.search - y.search;
+    z.read = x.read - y.read;
+    z.write = x.write - y.write;
+    z.read_tag = x.read_tag - y.read_tag;
+    z.write_tag = x.write_tag - y.write_tag;
+    z.total = x.total - y.total;
+    return z;
+  }
+  
+  
+  // power operators
+  inline power_t operator+(const power_t & x, const power_t & y)
+  {
+    power_t z;
+    z.leakage = x.leakage + y.leakage;
+    z.baseline = x.baseline + y.baseline;
+    z.search = x.search + y.search;
+    z.read = x.read + y.read;
+    z.write = x.write + y.write;
+    z.read_tag = x.read_tag + y.read_tag;
+    z.write_tag = x.write_tag + y.write_tag;
+    z.total = x.total + y.total;
+    return z;
+  }
+  
+  
+  inline power_t operator-(const power_t & x, const power_t & y)
+  {
+    power_t z;
+    z.leakage = x.leakage - y.leakage;
+    z.baseline = x.baseline - y.baseline;
+    z.search = x.search - y.search;
+    z.read = x.read - y.read;
+    z.write = x.write - y.write;
+    z.read_tag = x.read_tag - y.read_tag;
+    z.write_tag = x.write_tag - y.write_tag;
+    z.total = x.total - y.total;
+    return z;
+  }
+  
+  
+  // energy to power conversion: power = energy*frequency
+  inline power_t operator*(const energy_t & x, const double y)
+  {
+    power_t z;
+    z.leakage = x.leakage * y;
+    z.baseline = x.baseline * y;
+    z.search = x.search * y;
+    z.read = x.read * y;
+    z.write = x.write * y;
+    z.write_tag = x.write_tag * y;
+    z.read_tag = x.read_tag * y;
+    z.total = x.total * y;
+    return z;
+  }
+  
+  
+  // power to energy conversion: energy = power/frequency 
+  inline energy_t operator/(const power_t & x, const double y)
+  {
+    energy_t z;
+    z.leakage = x.leakage / y;
+    z.baseline = x.baseline / y;
+    z.search = x.search / y;
+    z.read = x.read / y;
+    z.read_tag = x.read_tag / y;
+    z.write = x.write / y;
+    z.write_tag = x.write_tag / y;
+    z.total = x.total / y;
+    return z;
+  }
+  
+  enum energy_introspector_pseudo_component_type
+  {
+    EI_COMP_MODULE,
+    EI_COMP_PARTITION,
+    EI_COMP_PACKAGE,
+    EI_COMP_SENSOR,
+    EI_COMP_UNKNOWN
+  };
+
+  enum energy_introspector_data_type
+  {
+    EI_DATA_DIMENSION,
+    EI_DATA_COUNTERS,
+    EI_DATA_ENERGY,
+    EI_DATA_POWER,
+    EI_DATA_TEMPERATURE,
+    EI_DATA_FAILURE_PROBABILITY,
+    EI_DATA_THERMAL_GRID,
+    EI_DATA_FAILURE_GRID,
+    EI_DATA_UNKNOWN
+  };
+
+  enum energy_introspector_variable_type
+  {
+    EI_VAR_INT,
+    EI_VAR_UNSIGNED_INT,
+    EI_VAR_DOUBLE,
+    EI_VAR_LONG_DOUBLE,
+    EI_VAR_COUNTERS,
+    EI_VAR_DIMENSION,
+    EI_VAR_ENERGY,
+    EI_VAR_POWER,
+    EI_VAR_UNKNOWN
+  };
+
+  enum energy_introspector_function_type
+  {
+    EI_FUNC_PULL_DATA,
+    EI_FUNC_PUSH_DATA,
+    EI_FUNC_UPDATE_VARIABLE,
+    EI_FUNC_COMPUTE_POWER,
+    EI_FUNC_COMPUTE_TEMPERATURE,
+    EI_FUNC_COMPUTE_RELIABILITY,
+    EI_FUNC_UNKNOWN
+  };
+  
+} // namespace EI
+#endif

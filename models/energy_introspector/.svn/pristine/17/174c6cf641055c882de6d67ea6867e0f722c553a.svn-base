@@ -1,0 +1,43 @@
+-module.name										IntSim
+-module.energy_library					intsim
+
+# the following four must be defined
+-module.area										35e-6 # 35mm^2
+-module.feature_size						22e-9 # 22nm
+-module.gates										58e6 # 58 million
+-module.clock_frequency					8e9 # 8GHz
+-module.temperature							358 # 85C
+
+# the following may or may not be defined
+-module.voltage									0.5 # 0.5V
+-module.threshold_voltage				0.2 # 0.2V
+-module.critical_path_depth			10
+-module.rents_constant_k				4
+-module.rents_constant_p				0.6
+-module.activity_factor					0.1 # 10%
+-module.tdp_activity_factor			0.1 # 10%
+-module.voltage_spec						0.5
+-module.threshold_voltage_spec	0.24
+-module.oxide_thickness					1.1e-9
+-module.alpha_power_law					1.3
+-module.pn_ratio								0.5
+-module.subvtslope_spec					100e-3
+-module.dielectric_permitivity	2.0
+-module.copper_resistivity			1.95e-8
+-module.wiring_aspect_ratio			2
+-module.reflectivity_coefficient	0.5
+-module.specularity							0.5
+-module.power_pads							600
+-module.power_pad_distance			300e-6
+-module.power_pad_length				50e-6
+-module.ir_drop_limit						0.02 # 2%
+-module.router_efficiency				0.5
+-module.repeater_efficiency			0.5
+-module.average_fanouts					3
+-module.clock_margin						0.2 # 20%
+-module.Htree_max_span					3e-3
+-module.latches_per_buffer			20
+-module.clock_factor						1.0
+-module.clock_gating_factor			0.4
+-module.max_tier								40
+-module.end

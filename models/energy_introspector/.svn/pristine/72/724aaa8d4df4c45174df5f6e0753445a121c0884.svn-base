@@ -1,0 +1,55 @@
+-----------------------------------------------------------------------------------------------------------------
+Results from INTsim
+-----------------------------------------------------------------------------------------------------------------
+
+Pitches of different pairs of metal levels after repeaters insertion (in nm):
+44.000000  183.866252  212.750639  318.754837  331.812595  1166.240666  
+
+Number of metal levels needed after repeater insertion: 12
+
+Area- 
+Logic gate area = 10.386640 mm, Repeater area = 2.098509 sq mm, Area available for decaps and clock circuitary = 22.514851 sq mm
+
+Power- 
+Leakage power: Logic gates = 3.966394 W,  Repeaters = 1.740526 W
+Dynamic power: Logic gates = 3.877372 W,  Repeaters = 0.957072 W,  Interconnects = 13.908720 W,  Clock = 10.245709 W
+Total power = 34.695792 W
+
+Wire efficiency (from Metal 1 to Metal n)- 
+0.323469  0.381049  0.332262  0.413861  0.363448  0.336769  
+
+Input parameters:
+Vdd = 0.50 V
+Vt = 0.20 V
+Clock frequency = 8.00 GHz
+Number of gates on a critical path = 10.00
+Activity factor = 0.10 
+Rent constant k = 4.00
+Rent constant p = 0.60
+chip area = 35.00 sq mm
+Number of gates = 58.00 million
+Feature size = 22.00 nm
+Saturation drain current of a minimum size nFET = 760.00 uA/um
+Leakage current of a minimum size nFET = 0.20 uA/um
+Vdd and Vt at which these currents are specified = 0.50 V and 0.24 V
+Subthreshold slope at 85 degrees Celcius = 0.10 mV/dec
+Effective oxide thickness = 1.10 nm
+Alpha of the power law MOSFET model = 1.30
+Ratio of drive currents of pMOS to nMOS = 0.50
+chiplectric permitivity = 2.00
+Wire resistivity without size effects = 1.95e-08 ohm-m
+Specularity parameter = 0.50
+Reflectivity coefficient at grain boundaries for Cu = 0.50
+Wire aspect ratio = 2.00
+Number of power pads = 600.0
+Pad to pad distance = 300.0 um
+Pad length = 50.0 um
+IR drop limit = 2.0 percent
+Router efficiency = 50.0 percent
+Average fan-out = 3.0
+Percentage of clock cycle lost to skew and process variations = 20.0 percent
+Max span of H tree that needs to be driven = 3.0 nm
+Latches per buffer = 20.0
+Clock factor = 1.00
+Percentage of local clock power saved by clock gating = 0.4 percent
+-----------------------------------------------------------------------------------------------------------------

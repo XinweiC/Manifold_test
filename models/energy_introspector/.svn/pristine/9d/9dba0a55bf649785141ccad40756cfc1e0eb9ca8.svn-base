@@ -1,0 +1,9 @@
+-module.ID			DSENT
+-module.energy_library		dsent
+-module.clock_frequency		1.0e9
+-module.model			ElectricalClos
+-module.layer			Metal1
+-module.layer			Local
+-module.layer			Intermediate
+-module.layer			Global
+-module.end

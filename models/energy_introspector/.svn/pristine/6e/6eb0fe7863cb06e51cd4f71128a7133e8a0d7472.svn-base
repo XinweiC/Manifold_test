@@ -1,0 +1,104 @@
+#  The Energy Introspector (EI) does NOT possess the copyrights of the following tools, 
+#  and all terms and conditions are subject to what the original developers present:
+#      DSENT: Computer Science and Artificial Intelligence Lab, MIT
+#      IntSim: Microelectronics Research Center, Georgia Tech
+#      McPAT: Hewlett-Packard Labs
+#      3D-ICE: Embedded Systems Lab, EPFL
+#      HotSpot: Laboratory for Computer Architecture at Virginia, Univ. of Virginia
+#  The EI does NOT guarantee the same functionality, performance, or result
+#  of the above tools as the original developers' releases.
+#  The Use, modification, and distribution of the EI is subject to the policy of
+#  the Semiconductor Research Corporation (Task 2084.001).
+#  Copyright 2012
+#  William Song, Sudhakar Yalamanchili, Saibal Mukhopadhyay
+#  Georgia Institute of Technology, Atlanta, GA 30332
+#  and Arun Rodrigues
+#  Sandia National Laboratories, Albuquerque, NM 87185
+
+1. Build Library Models:
+
+    1.1 Build IntSim (if used):
+        # Test the original copy of IntSim.
+            $ cd ENERGYLIB_INTSIM/intsim_alpha
+            $ make
+            $ ./intsim
+        # If IntSim runs successfully, it creates an output file intsim.out
+        # Go back to the Energy Introspector main directory to create IntSim archive.
+            $ make intsim
+
+    1.2 Build McPAT (if used):
+        # Download McPAT0.8 (http://www.hpl.hp.com/research/mcpat/) to ENERGYLIB_MCPAT/
+        # After extracting tarball, there must be ENERGYLIB_MCPAT/mcpat0.8_r274
+        # Test the original copy of McPAT.
+            $ cd ENERGYLIB_MCPAT/mcpat0.8_r274
+            $ make
+            $ ./mcpat -print_level 5 -opt_for_clk 1 -infile Xeon.xml
+        # If McPAT runs successfully, it prints out the results.
+        # Go back to the Energy Introspector main directory to create McPAT archive.
+            $ make mcpat
+
+    1.3 Build TSV (if used):
+        # At the Energy Introspector main directory,
+        $ make tsv;
+
+    1.4 Build HotSpot (if used):
+        # Download HotSpot5.02 (http://lava.cs.virginia.edu/HotSpot/index.htm)
+        # to THERMALLIB_HOTSPOT/
+        # After extracting tarball, there must be THERMALLIB_HOTSPOT/HotSpot-5.02
+        # Test the original copy of HotSpot.
+            $ cd THERMALLIB_HOTSPOT/HotSpot-5.02
+            $ make
+            $ ./hotspot -f ev6.flp -p gcc.ptrace -model_type grid -grid_layer_file layer.lcf
+        # If HotSpot runs successfully, it prints steady-state temperatures of 
+        # floorplan units.
+        # Go back to the Energy Introspector main directory to create HotSpot archive.
+            $ make hotspot
+
+    1.5 Build 3D-ICE (if used):
+        # Download SuperLU-4.3 (http://crd-legacy.lbl.gov/~xiaoye/SuperLU/) to THERMALLIB_3DICE/
+        # After extracting tarball, there must be THERMALLIB_3DICE/SuperLU_4.3
+        # Donwload 3D-ICE 2.1 (http://esl.epfl.ch/3d-ice.html) to THERMALLIB_3DICE/
+        # After extracting tarball, there must be THERMALLIB_3DICE/3d-ice
+        # Test the original copy of 3D-ICE.
+            $ cd THERMALLIB_3DICE/SuperLU_4.3
+            $ make blaslib
+            $ make superlulib
+            $ cd ../3d-ice/ # go to THERMALLIB_3DICE/3d-ice
+            $ make
+            $ ./3D-ICE-Emulator example_transient.stk
+        # If 3D-ICE runs successfully, it prints transient temperatures and creates several output*.txt files.
+        # Go back to the Energy Introspector main directory to create 3d-ice archive.
+        $ make 3dice;
+
+    NOTE: In each library model, there is a tarball directory which includes a
+          downloaded copy from the original developers' website. In case that there 
+          is a problem with downloading the specified version of model, the included
+          tarball may be used to build it, but we do not guarantee this is the same 
+          copy as the original developers' release nor possess any copyrights or \
+          responsibilities of using it. All terms and conditions are subject to what 
+          the original developers present.
+
+
+2. Test Energy Introspector:
+        # Test examples are available at TEST_MAIN/test-$(LIBRARY_NAME).cc
+        # The examples load input configuration file froms CONFIG/$(LIBRARY_NAME)/
+        # The executions are equivalent to test commands in the section 1.1 above.
+        # NOTE: The results may differ from those of the test commands in the section 1.1
+        #       for various reasons depending on the library models:
+        #           1. IntSim:  IntSim v1.0 was updated with configurable parameters
+        #                       based on the technology node, which slightly differ from
+        #                       fixed default values provided in the original IntSim.
+        #           2. McPAT:   McPAT v0.8 includes several (apparent) bugs and errors.
+        #                       Patch files are provided in ENERGYLIB_MCPAT/patch/ to fix
+        #                       those and thus produce different outputs.
+        #           3. HotSpot: Patch files of HotSpot v5.02 in THERMALLIB_HOTSPOT/patch/
+        #                       are only to fix build and link errors when creating
+        #                       an archive file.
+        #           4. 3D-ICE:  Patch files of 3D-ICE v2.1 in THERMALLIB_3DICE/patch/
+        #                       are only to fix build and link errors when creating
+        #                       an archive file.
+        # Make test files.
+            $ make test
+        # If any of included library models were built, it creates test-$(LIBRARY_NAME)
+        # executables in the main Energy Introspector directory.
+

@@ -1,0 +1,7 @@
+qsimclient-core.cc is used with a qsim server to generate PIN trace files.
+
+[How to Use]:
+
+- copy qsimclient-core.cc to Zesto; rebuild Zesto; rebuild simulator
+- start qsim server
+- run simulator; trace files are generated as simulator runs.

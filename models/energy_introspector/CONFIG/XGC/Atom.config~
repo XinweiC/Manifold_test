@@ -1,0 +1,639 @@
+-package.name Atom
+-package.partition Atom:Frontend
+-package.partition Atom:Execute:INT
+-package.partition Atom:Execute:FP
+-package.partition Atom:Memory
+-package.end
+
+-partition.name				Atom:Frontend
+-partition.opt_for_clk			true # optimize the result on clock
+-partition.embedded			false # embedded processor?
+-partition.feature_size		16e-9 # technology node in meters
+-partition.temperature			345 # temperature in Kelvin
+-partition.component_type		core # core, uncore, llc(non-private caches)
+-partition.clock_frequency		3.000000e+09 # clock frequency in Hz
+-partition.longer_channel_device		false
+-partition.core_type			inorder
+-partition.wire_type			global
+-partition.device_type			hp
+-partition.interconnect_projection	aggressive
+-partition.wiring_type			global
+-partition.end
+
+-partition.name				Atom:Execute:INT
+-partition.opt_for_clk			true # optimize the result on clock
+-partition.embedded			false # embedded processor?
+-partition.feature_size		16e-9 # technology node in meters
+-partition.temperature			345 # temperature in Kelvin
+-partition.component_type		core # core, uncore, llc(non-private caches)
+-partition.clock_frequency		3.000000e+09 # clock frequency in Hz
+-partition.longer_channel_device		false
+-partition.core_type			inorder
+-partition.wire_type			global
+-partition.device_type			hp
+-partition.interconnect_projection	aggressive
+-partition.wiring_type			global
+-partition.end
+
+-partition.name				Atom:Execute:FP
+-partition.opt_for_clk			true # optimize the result on clock
+-partition.embedded			false # embedded processor?
+-partition.feature_size		16e-9 # technology node in meters
+-partition.temperature			345 # temperature in Kelvin
+-partition.component_type		core # core, uncore, llc(non-private caches)
+-partition.clock_frequency		3.000000e+09 # clock frequency in Hz
+-partition.longer_channel_device		false
+-partition.core_type			inorder
+-partition.wire_type			global
+-partition.device_type			hp
+-partition.interconnect_projection	aggressive
+-partition.wiring_type			global
+-partition.end
+
+-partition.name				Atom:Memory
+-partition.opt_for_clk			true # optimize the result on clock
+-partition.embedded			false # embedded processor?
+-partition.feature_size		16e-9 # technology node in meters
+-partition.temperature			345 # temperature in Kelvin
+-partition.component_type		core # core, uncore, llc(non-private caches)
+-partition.clock_frequency		3.000000e+09 # clock frequency in Hz
+-partition.longer_channel_device		false
+-partition.core_type			inorder
+-partition.wire_type			global
+-partition.device_type			hp
+-partition.interconnect_projection	aggressive
+-partition.wiring_type			global
+-partition.end
+
+-module.name			core:instruction_buffer
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		8
+-module.output_width		64
+-module.size			128 # 16 entries
+-module.rw_ports		2 # decode width
+-module.access_mode		normal
+-module.end
+
+-module.name			core:BTB
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		4
+-module.output_width		32
+-module.assoc			2
+-module.size			5120 # 1024(L1) + 2096(L2)
+-module.tag_width		69
+-module.rw_ports		1
+-module.rd_ports		1
+-module.wr_ports		1
+-module.cycle_time		1
+-module.access_time		3
+-module.access_mode		normal
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:chooser
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		1
+-module.output_width		8
+-module.size			4096
+-module.tag_width		69
+-module.rd_ports		1
+-module.wr_ports		1
+-module.access_mode		fast
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:global_predictor
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		1
+-module.output_width		8
+-module.size			4096
+-module.tag_width		69
+-module.rd_ports		1
+-module.wr_ports		1
+-module.access_mode		fast
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:L1_local_predictor
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		2
+-module.output_width		16
+-module.size			2048
+-module.tag_width		69
+-module.rd_ports		1
+-module.wr_ports		1
+-module.access_mode		fast
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:L2_local_predictor
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		1
+-module.output_width		8
+-module.size			1024
+-module.tag_width		69
+-module.rd_ports		1
+-module.wr_ports		1
+-module.access_mode		fast
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:RAS
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		8
+-module.output_width		64
+-module.size			128 # 16 entries
+-module.tag_width		69
+-module.rd_ports		1
+-module.wr_ports		1
+-module.access_mode		fast
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:ITLB
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		5
+-module.output_width		40
+-module.assoc			0
+-module.size			640
+-module.tag_width		57
+-module.rd_ports		1
+-module.wr_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read	0.000000
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name			core:IL1
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32 # in bytes
+-module.output_width		256 # in bits
+-module.assoc			4
+-module.size			32768 # 32KB (256 sets)
+-module.tag_width		44 # phy_addr(52 bits) - log2(sets) - log2(line_width) + tag_overhead(5 bits)
+-module.rw_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.write	0.000000
+-module.end
+
+-module.name		core:IL1:MissBuffer
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		40
+-module.output_width		320
+-module.assoc		0
+-module.size		320
+-module.tag_width		57 # phy_addr (52 bits) + tag_overhead (5 bits)
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name		core:IL1:FillBuffer
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32
+-module.output_width		256
+-module.assoc		0
+-module.size		256
+-module.tag_width		57
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name		core:IL1:PrefetchBuffer
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32
+-module.output_width		256
+-module.assoc		0
+-module.size		256
+-module.tag_width		57
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name			core:instruction_decoder
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		instruction_decoder
+-module.x86			true
+-module.opcode			16
+-module.scaling			2.000000
+-module.end
+
+-module.name			core:operand_decoder
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		instruction_decoder
+-module.x86			true
+-module.opcode			4
+-module.scaling			2.000000
+-module.end
+
+-module.name			core:uop_sequencer
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		instruction_decoder
+-module.x86			true
+-module.opcode			8
+-module.scaling			2.000000
+-module.end
+
+-module.name			core:uop_queue
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		16
+-module.output_width		128
+-module.size		256 # 16 entries
+-module.rw_ports		2 # issue width
+-module.access_mode		normal
+-module.end
+
+#general purpose
+-module.name			core:GPREG
+-module.partition		Atom:Execute:INT
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		8 # 64-bit data
+-module.sets			16 # 16 entries
+-module.rw_ports		1
+-module.rd_ports		2 # 2*issue width
+-module.wr_ports		1 # commit width
+-module.access_mode		sequential
+-module.area_scaling		1.1 # McPAT overhead number
+-module.end
+
+#floating-point registers
+-module.name			core:FPREG
+-module.partition		Atom:Execute:FP
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		ram
+-module.line_width		10 # 80-bit data
+-module.sets			16 # 16 entries
+-module.rw_ports		1
+-module.rd_ports		2 # 2*fp_issue width
+-module.wr_ports		1 # commit width
+-module.access_mode		sequential
+-module.area_scaling		1.1 # McPAT overhead number
+-module.end
+
+-module.name			core:ALU
+-module.partition		Atom:Execute:INT
+-module.energy_library		McPAT
+-module.energy_model		functional_unit
+-module.energy_submodel		alu
+-module.with_clock_grid		false
+-module.scaling			2.000000
+-module.end
+
+-module.name			core:FPU
+-module.partition		Atom:Execute:FP
+-module.energy_library		McPAT
+-module.energy_model		functional_unit
+-module.energy_submodel		fpu
+-module.with_clock_grid		false
+-module.scaling			2.000000
+-module.TDP_duty_cycle.read		0.300000
+-module.end
+
+-module.name			core:MUL
+-module.partition		Atom:Execute:FP
+-module.energy_library		McPAT
+-module.energy_model		functional_unit
+-module.energy_submodel		mul
+-module.with_clock_grid		false
+-module.scaling			1.000000
+-module.TDP_duty_cycle.read		0.300000
+-module.end
+
+-module.name		core:DL1
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32
+-module.output_width		256
+-module.assoc		4
+-module.size		32768 # 32KB (256 sets)
+-module.tag_width		44
+-module.rw_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.335000
+-module.TDP_duty_cycle.write		0.165000
+-module.end
+
+-module.name		core:DL1:MissBuffer
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		40
+-module.output_width		320
+-module.assoc		0
+-module.size		320
+-module.tag_width		57
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name		core:DL1:FillBuffer
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32
+-module.output_width		256
+-module.assoc		0
+-module.size		256
+-module.tag_width		57
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name		core:DL1:PrefetchBuffer
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32
+-module.output_width		256
+-module.assoc		0
+-module.size		256
+-module.tag_width		57
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name		core:DL1:WBB
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		32
+-module.output_width		256
+-module.assoc		0
+-module.size		256
+-module.tag_width		57
+-module.rw_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.end
+
+-module.name		core:StoreQueue
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		8
+-module.output_width		64
+-module.assoc		0
+-module.size		64 # 8 entries
+-module.tag_width		85
+-module.rd_ports		1
+-module.wr_ports		1
+-module.search_ports		1
+-module.access_mode		sequential
+-module.TDP_duty_cycle.read		0.500000
+-module.TDP_duty_cycle.write		0.500000
+-module.TDP_duty_cycle.search		0.500000
+-module.area_scaling		1.210000
+-module.end
+
+-module.name		core:DTLB
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		array
+-module.energy_submodel		cache
+-module.line_width		5
+-module.output_width		40
+-module.assoc		0
+-module.size		640
+-module.tag_width		57
+-module.rd_ports		1
+-module.wr_ports		1
+-module.search_ports		1
+-module.cycle_time		1
+-module.access_time		2
+-module.access_mode		normal
+-module.TDP_duty_cycle.read		0.000000
+-module.TDP_duty_cycle.write		0.000000
+-module.TDP_duty_cycle.search		0.500000
+-module.end
+
+#bypass interconnect
+-module.name			core:ALU_bypass
+-module.partition		Atom:Execute:INT
+-module.energy_library		McPAT
+-module.energy_model		interconnect
+-module.data			72 # data(64bit) + tag(8bit)
+-module.connect			core:ALU
+-module.end
+
+#bypass interconnect
+-module.name			core:FPU_bypass
+-module.partition		Atom:Execute:FP
+-module.energy_library		McPAT
+-module.energy_model		interconnect
+-module.data			88 # data(80bit) + tag(8bit)
+-module.connect			core:FPU
+-module.end
+
+#bypass interconnect
+-module.name			core:MUL_bypass
+-module.partition		Atom:Execute:FP
+-module.energy_library		McPAT
+-module.energy_model		interconnect
+-module.data			72 # data(64bit) + tag(8bit)
+-module.connect			core:MUL
+-module.end
+
+-module.name		core:undiffCore:Frontend
+-module.partition		Atom:Frontend
+-module.energy_library		McPAT
+-module.energy_model		undifferentiated_core
+-module.pipeline_stages		16
+-module.hthreads		1
+-module.issue_width		4
+-module.scaling	0.25
+-module.end
+
+-module.name		core:undiffCore:Execute:INT
+-module.partition		Atom:Execute:INT
+-module.energy_library		McPAT
+-module.energy_model		undifferentiated_core
+-module.pipeline_stages		16
+-module.hthreads		1
+-module.issue_width		4
+-module.scaling	0.10
+-module.end
+
+-module.name		core:undiffCore:Execute:FP
+-module.partition		Atom:Execute:FP
+-module.energy_library		McPAT
+-module.energy_model		undifferentiated_core
+-module.pipeline_stages		16
+-module.hthreads		1
+-module.issue_width		4
+-module.scaling	0.55
+-module.end
+
+-module.name		core:undiffCore:Memory
+-module.partition		Atom:Memory
+-module.energy_library		McPAT
+-module.energy_model		undifferentiated_core
+-module.pipeline_stages		16
+-module.hthreads		1
+-module.issue_width		4
+-module.scaling	0.10
+-module.end
+
+// microarchitecture signaling wires and latches
+#program counter
+-module.name					core:PC
+-module.partition				Atom:Frontend
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			128 # current PC(64 bits) + next PC(64 bits)
+-module.end
+
+#latch: instruction queue to decoder
+-module.name					core:pipe:IB2ID
+-module.partition				Atom:Frontend
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			192 # instruction length (16 bytes) + PC
+-module.scaling					2 # decode width
+-module.end
+
+#latch: instruction decoder to uopQ
+-module.name					core:pipe:ID2uQ
+-module.partition				Atom:Frontend
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector		  192 # instruction length (16 bytes) + PC
+-module.scaling					2 # decode width
+-module.end
+
+#latch: uopQ to execution payload/dispatch
+-module.name					core:pipe:uQ2EXP
+-module.partition				Atom:Frontend
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			152 # instruction length (16 bytes) + 3*operand tags(8 bits)
+-module.scaling					2 # issue width
+-module.end
+
+#latch: execution payload/dispatch to execution units
+-module.name					core:pipe:EXP2ALU
+-module.partition				Atom:Execute:INT
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			264 # instruction length (16 bytes) + 2*data width (64 bits) + output operand tag (8 bits)
+-module.scaling					1 # execution width
+-module.end
+
+#latch: execution payload/dispatch to execution units
+-module.name					core:pipe:EXP2FPU
+-module.partition				Atom:Execute:FP
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			264 # instruction length (16 bytes) + 2*data width (64 bits) + output operand tag (8 bits)
+-module.scaling					1 # execution width
+-module.end
+
+#latch: execution units to result (result/bypass)
+-module.name					core:pipe:ALU2CM
+-module.partition				Atom:Execute:INT
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			72 # data width (64 bits) + output operand tag (8 bits)
+-module.scaling					1 # execution width
+-module.end
+
+#latch: execution units to result (result/bypass)
+-module.name					core:pipe:FPU2CM
+-module.partition				Atom:Execute:FP
+-module.energy_library				McPAT
+-module.energy_model				pipeline
+-module.pipeline_stages				1
+-module.per_stage_vector			72 # data width (64 bits) + output operand tag (8 bits)
+-module.scaling					1 # execution width
+-module.end
